@@ -18,7 +18,7 @@ CXXFLAGS += -I$(PROJECT_DIR)/inc
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(shell find $(SRC_DIR) -name '*.c')) \
        $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(shell find $(SRC_DIR) -name '*.cpp'))
 
-TARGET = bin/output
+TARGET = bin/output.bin
 
 # Executable
 all: create $(TARGET)
@@ -40,4 +40,12 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 # Rule for creating the obj folder if it doesn't exist
 create:
-	mkdir -p obj bin
+	mkdir -p $(OBJ_DIR) $(BIN_DIR)
+
+# Phony target for build
+buildtime:
+	@d=$$(date +%s); \
+	$(MAKE) all; \
+	echo "Build took $$(($$(date +%s)-d)) seconds"
+
+.PHONY: all clean create buildtime
